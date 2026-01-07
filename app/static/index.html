@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Launch Tracker</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <main class="container">
+    <h1>🚀 Launch Tracker</h1>
+
+    <h2>Statistics</h2>
+    <div id="stats"></div>
+    <article>
+      <div class="grid">
+        <label>
+          Date From
+          <input type="date" id="date_from">
+        </label>
+
+        <label>
+          Date To
+          <input type="date" id="date_to">
+        </label>
+
+        <label>
+          Rocket
+          <select id="rocket">
+            <option value="">All</option>
+          </select>
+        </label>
+
+        <label>
+          Launch Site
+          <select id="launchpad">
+            <option value="">All</option>
+          </select>
+        </label>
+
+        <label>
+          Success
+          <select id="success">
+            <option value="">All</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </label>
+      </div>
+    </article>
+
+
+    <h2>Launches</h2>
+    <div id="launches"></div>
+  </main>
+
+  <script src="stats.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

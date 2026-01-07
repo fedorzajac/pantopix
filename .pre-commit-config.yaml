@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (python)
+        args: ["--profile=black"]
+        exclude: .*/(tests|migrations|docs)/
+
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        exclude: .*/(tests|migrations|docs)/
+
+  # - repo: https://github.com/pycqa/pylint
+  #   rev: v3.0.3
+  #   hooks:
+  #     - id: pylint
+  #       args:
+  #         - --max-line-length=100
+  #         - -d duplicate-code
+  #       exclude: .*/(tests|migrations|docs)/
