@@ -50,7 +50,7 @@ async function loadLaunches() {
         <p><strong>Date:</strong> ${launch.date_utc}</p>
         <p><strong>Site:</strong> ${launch.launchpad}</p>
         <p><strong>Details:</strong> ${launch.details}</p>
-        <p><strong>Failures:</strong> ${launch.failures}</p>
+        <p><strong>Failures:</strong> ${launch.failures.length > 0 ? launch.failures.map(f => f.reason || 'Unknown').join(', ') : 'None'}</p>
         <p><strong>Success:</strong> ${launch.success ? '✓ Yes' : '✗ No'}</p>
       </article>
     `;
@@ -58,6 +58,32 @@ async function loadLaunches() {
 
   div.innerHTML = html;
 }
+function exportData(format) {
+  const dateFrom = document.getElementById('date_from').value;
+  const dateTo = document.getElementById('date_to').value;
+  const rocket = document.getElementById('rocket').value;
+  const launchpad = document.getElementById('launchpad').value;
+  const success = document.getElementById('success').value;
+
+  const params = new URLSearchParams();
+  if (dateFrom) {
+    const unixFrom = Math.floor(new Date(dateFrom).getTime() / 1000);
+    params.append('date_from', unixFrom);
+  }
+  if (dateTo) {
+    const unixTo = Math.floor(new Date(dateTo).getTime() / 1000);
+    params.append('date_to', unixTo);
+  }
+  if (rocket) params.append('rocket', rocket);
+  if (launchpad) params.append('launchpad', launchpad);
+  if (success) params.append('success', success);
+
+  const url = `/export/${format}?` + params.toString();
+  window.location.href = url;
+}
+
+document.getElementById('exportCsv').addEventListener('click', () => exportData('csv'));
+document.getElementById('exportJson').addEventListener('click', () => exportData('json'));
 
 document.getElementById('date_from').addEventListener('change', loadLaunches);
 document.getElementById('date_to').addEventListener('change', loadLaunches);

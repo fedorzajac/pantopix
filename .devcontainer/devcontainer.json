@@ -4,6 +4,7 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
+  "overrideCommand": true,
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },

@@ -5,6 +5,7 @@ from typing import Dict, List
 from fastapi import APIRouter, Depends, FastAPI, Request, status
 
 from app.analytics import analytics
+from app.export import export_to_csv, export_to_json
 from app.methods import filter_launches, healthcheck, launchpads, rockets
 from app.models import FilterQuery, Launch, Launchpad, Rocket
 
@@ -95,6 +96,31 @@ def _stats_router() -> APIRouter:
     return router
 
 
+def _export_router() -> APIRouter:
+    """Export endpoints."""
+    router = APIRouter(prefix="/export", tags=["export"])
+
+    @router.get(
+        "/csv",
+        name="export_csv",
+        summary="Export launches to CSV",
+    )
+    async def export_csv_endpoint(request: Request, q: FilterQuery = Depends()):
+        launches = await filter_launches(request, **q.model_dump())
+        return export_to_csv(launches)
+
+    @router.get(
+        "/json",
+        name="export_json",
+        summary="Export launches to JSON",
+    )
+    async def export_json_endpoint(request: Request, q: FilterQuery = Depends()):
+        launches = await filter_launches(request, **q.model_dump())
+        return export_to_json(launches)
+
+    return router
+
+
 def register_routers(app: FastAPI) -> None:
     """Register all routers on the FastAPI application."""
     routers = [
@@ -103,6 +129,7 @@ def register_routers(app: FastAPI) -> None:
         _select_rocket_router(),
         _select_launchpad_router(),
         _stats_router(),
+        _export_router(),
     ]
     for router in routers:
         app.include_router(router, prefix=API_PREFIX)
